@@ -1,0 +1,730 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YouTube Keyword Assistant</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Firebase SDKs (REQUIRED for actual Firebase interaction) -->
+  <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-auth-compat.js"></script>
+  <style>
+    /* Global Box-Sizing for better responsiveness */
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    /* CSS Variables for a Dark, Cool Theme */
+    :root {
+      --primary-red: #FF0000; /* YouTube Red */
+      --dark-red: #CC0000;
+      --background-dark: #121212; /* Deep dark background */
+      --card-background: #1e1e1e; /* Slightly lighter for cards */
+      --border-color: #333;
+      --text-light: #e0e0e0; /* Light text for readability */
+      --text-medium: #888; /* For placeholders, secondary text */
+      --shadow-color: rgba(0, 0, 0, 0.7); /* Deep shadows */
+      --accent-blue: #007bff; /* A subtle blue for contrast/hover */
+    }
+
+    body {
+      font-family: 'Inter', sans-serif; /* Modern, clean font */
+      background: var(--background-dark);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      color: var(--text-light);
+      margin: 0;
+      padding-bottom: 80px; /* Space for fixed bottom navigation */
+      overflow-x: hidden; /* Prevent horizontal scroll */
+    }
+
+    /* Custom Alert/Message Box */
+    .message-box-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    .message-box-overlay.show {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .message-box {
+        background-color: var(--card-background);
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 8px 30px var(--shadow-color);
+        text-align: center;
+        max-width: 350px;
+        transform: translateY(-20px);
+        transition: transform 0.3s ease;
+        border: 1px solid var(--border-color);
+    }
+
+    .message-box-overlay.show .message-box {
+        transform: translateY(0);
+    }
+
+    .message-box p {
+        margin-bottom: 25px;
+        font-size: 1.1em;
+        color: var(--text-light);
+    }
+
+    .message-box button {
+        background-color: var(--primary-red);
+        color: white;
+        border: none;
+        padding: 10px 25px;
+        border-radius: 25px;
+        cursor: pointer;
+        font-size: 1em;
+        transition: background-color 0.2s ease, transform 0.1s ease;
+    }
+
+    .message-box button:hover {
+        background-color: var(--dark-red);
+        transform: translateY(-1px);
+    }
+
+    /* Header Styling */
+    header {
+      width: 100%;
+      background: linear-gradient(to right, #222, #181818);
+      padding: 12px 0;
+      text-align: center;
+      box-shadow: 0 4px 15px var(--shadow-color);
+      margin-bottom: 15px;
+      position: relative; /* For credit box positioning */
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2em;
+      color: var(--primary-red);
+      letter-spacing: 1px;
+      text-shadow: 0 0 10px var(--primary-red);
+    }
+
+    /* Credit Display Box */
+    .credits-box {
+        position: absolute;
+        top: 50%;
+        right: 20px;
+        transform: translateY(-50%);
+        background-color: var(--card-background);
+        padding: 8px 15px;
+        border-radius: 20px;
+        border: 1px solid var(--border-color);
+        box-shadow: 0 2px 8px var(--shadow-color);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 1.1em;
+        color: var(--text-light);
+        min-width: 120px; /* Ensure it's wide enough */
+        justify-content: center;
+    }
+
+    .credits-box span {
+        font-weight: 600;
+    }
+    .credits-box .credit-icon {
+        font-size: 1.2em; /* Larger coin emoji */
+    }
+
+
+    /* Main Content Area */
+    .container {
+      width: 100%;
+      max-width: 600px;
+      padding: 0 20px;
+      box-sizing: border-box;
+      margin-top: 0;
+    }
+
+    h2 {
+      font-size: 1.8em;
+      color: var(--text-light);
+      text-align: center;
+      margin-bottom: 15px;
+      text-shadow: 1px 1px 5px var(--shadow-color);
+    }
+
+    p {
+      text-align: center;
+      color: var(--text-medium);
+      font-size: 1.05em;
+      line-height: 1.6;
+      margin-bottom: 30px;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    #searchContainer {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 30px;
+      width: 100%;
+      position: relative;
+    }
+
+    input[type="text"] {
+      flex-grow: 1;
+      padding: 14px 20px;
+      font-size: 1.1em;
+      border-radius: 30px;
+      border: 1px solid var(--border-color);
+      background: var(--card-background);
+      color: var(--text-light);
+      box-shadow: inset 0 3px 8px var(--shadow-color);
+      transition: all 0.3s ease;
+    }
+
+    input[type="text"]::placeholder {
+      color: var(--text-medium);
+    }
+
+    input[type="text"]:focus {
+      outline: none;
+      border-color: var(--primary-red);
+      box-shadow: inset 0 3px 8px var(--shadow-color), 0 0 0 4px rgba(255, 0, 0, 0.3);
+    }
+
+    button {
+      padding: 14px 30px;
+      border: none;
+      border-radius: 30px;
+      background: var(--primary-red);
+      color: white;
+      cursor: pointer;
+      font-size: 1.1em;
+      font-weight: 600;
+      transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+      box-shadow: 0 6px 15px var(--shadow-color);
+      white-space: nowrap;
+    }
+
+    button:hover {
+      background: var(--dark-red);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px var(--shadow-color);
+    }
+
+    button:active {
+      transform: translateY(0);
+      box-shadow: 0 3px 6px var(--shadow-color);
+    }
+
+    /* Loading Bar Styling */
+    .loading-bar {
+      position: absolute;
+      bottom: -15px;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background-color: var(--primary-red);
+      border-radius: 2px;
+      overflow: hidden;
+      display: none;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .loading-bar.show {
+      display: block;
+      opacity: 1;
+      animation: pulse 1.5s infinite ease-in-out;
+    }
+
+    @keyframes pulse {
+      0% { transform: scaleX(0); transform-origin: left; }
+      50% { transform: scaleX(1); transform-origin: left; }
+      50.1% { transform: scaleX(1); transform-origin: right; }
+      100% { transform: scaleX(0); transform-origin: right; }
+    }
+
+
+    #suggestionsList {
+      list-style: none;
+      padding: 0;
+      width: 100%;
+      margin-top: 20px;
+    }
+
+    li {
+      background: var(--card-background);
+      padding: 15px 20px;
+      margin-bottom: 12px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      box-shadow: 0 4px 12px var(--shadow-color);
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+      border: 1px solid var(--border-color);
+    }
+
+    li:hover {
+      transform: translateX(8px);
+      box-shadow: 0 6px 18px var(--shadow-color);
+      border-color: var(--primary-red);
+    }
+
+    .kw-checkbox {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 22px;
+      height: 22px;
+      border: 2px solid var(--primary-red);
+      border-radius: 6px;
+      position: relative;
+      cursor: pointer;
+      transition: background 0.2s ease, border-color 0.2s ease;
+      background-color: var(--background-dark);
+      flex-shrink: 0;
+    }
+
+    .kw-checkbox:checked {
+      background-color: var(--primary-red);
+      border-color: var(--primary-red);
+    }
+
+    .kw-checkbox:checked::after {
+      content: '✔';
+      font-size: 16px;
+      color: white;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    /* Controls moved to bottom of container */
+    #controls {
+      margin-top: 30px;
+      display: flex;
+      gap: 15px;
+      width: 100%;
+      justify-content: center;
+      padding-bottom: 20px; /* Space above nav bar */
+    }
+
+    #selectAllBtn, #copyBtn {
+      display: none; /* Controlled by JS classes */
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 0.3s ease-out;
+    }
+
+    #selectAllBtn.show, #copyBtn.show {
+      display: inline-block;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Bottom Navigation Bar */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: linear-gradient(to top, #222, #181818);
+      box-shadow: 0 -4px 15px var(--shadow-color);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 10px 0;
+      z-index: 999;
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-medium);
+      font-size: 0.85em;
+      text-decoration: none;
+      padding: 8px 5px;
+      border-radius: 8px;
+      transition: color 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
+      cursor: pointer;
+      flex: 1; /* Distribute space evenly */
+      text-align: center; /* Centering text */
+    }
+
+    .nav-item:hover {
+      color: var(--primary-red);
+      background-color: rgba(255, 0, 0, 0.1);
+      transform: translateY(-3px);
+    }
+
+    .nav-item svg {
+      width: 24px;
+      height: 24px;
+      margin-bottom: 5px;
+      fill: var(--text-medium);
+      transition: fill 0.2s ease;
+    }
+
+    .nav-item:hover svg {
+      fill: var(--primary-red);
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 600px) {
+      header {
+        padding: 10px 0;
+      }
+      header h1 {
+        font-size: 1.8em;
+      }
+      .credits-box {
+        position: static; /* Stack on mobile */
+        transform: none;
+        margin: 10px auto; /* Center static box */
+        width: 90%;
+      }
+      h2 {
+        font-size: 1.6em;
+      }
+      h3 {
+        font-size: 0.9em;
+        text-align: center;
+        color: var(--text-medium);
+        
+      }
+      p {
+        font-size: 0.9em;
+      }
+      .container {
+        padding: 0 15px;
+      }
+      #searchContainer {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+      }
+      input[type="text"], button {
+        width: 100%;
+      }
+      #controls {
+        flex-direction: column;
+        gap: 10px;
+      }
+      .nav-item {
+        font-size: 0.7em;
+        padding: 5px 2px;
+      }
+      .nav-item svg {
+        width: 18px;
+        height: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Custom Message Box HTML -->
+  <div class="message-box-overlay" id="messageBoxOverlay">
+    <div class="message-box">
+      <p id="messageBoxText"></p>
+      <button id="messageBoxCloseBtn">OK</button>
+    </div>
+  </div>
+
+  <header>
+    <h1>Hamexy SEO</h1>
+    <h3>Activated Plan = Free</h3>
+    <!-- Credits Display Box -->
+  
+  </header>
+
+  <div class="container">
+    <h2>Discover Top Keywords for Your Videos</h2>
+    <p>
+      Unlock powerful insights! Enter a keyword to find popular Keywords
+      and boost your video's visibility on YouTube.
+    </p>
+
+    <div id="searchContainer">
+      <input type="text" id="keywordInput" placeholder="Type a keyword..." />
+      <button id="searchBtn">Search</button>
+      <!-- Loading bar added here -->
+      <div id="loadingBar" class="loading-bar"></div>
+    </div>
+
+    <ul id="suggestionsList"></ul>
+
+    <div id="controls">
+      <button id="selectAllBtn">Select All</button>
+      <button id="copyBtn">Copy Selected</button>
+    </div>
+  </div>
+  <!-- Premium Restriction Popup -->
+<div class="message-box-overlay" id="premiumPopupOverlay">
+  <div class="message-box">
+    <p>
+      ❌ You can't use these features in Free Plan.<br><br>
+      Buy Premium Plan to use everything unlimited.<br><br>
+      <a href="plans.html" style="color: #00aaff; text-decoration: underline;">Buy Here</a>
+    </p>
+    <button id="premiumPopupCloseBtn">OK</button>
+  </div>
+</div>
+
+  <!-- Bottom Navigation Bar -->
+  <nav class="bottom-nav">
+    <a href="research.html" class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM17 13H13V17H11V13H7V11H11V7H13V11H17V13Z" fill="currentColor"/>
+      </svg>
+      <span>Keyword Research</span>
+    </a>
+    <a href="tittle.html" class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M5 4C3.34 4 2 5.34 2 7V17C2 18.66 3.34 20 5 20H19C20.66 20 22 18.66 22 17V7C22 5.34 20.66 4 19 4H5ZM13 13H5V11H13V13ZM19 13H15V11H19V13ZM19 9H5V7H19V9Z" fill="currentColor"/>
+      </svg>
+      <span>Title Generator</span>
+    </a>
+    <a href="desc.html" class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M19 3H5C3.89 3 3 3.9 3 5V19C3 20.1 3.89 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.11 3 19 3ZM17 17H7V15H17V17ZM17 13H7V11H17V13ZM17 9H7V7H17V9Z" fill="currentColor"/>
+      </svg>
+      <span>Description Generator</span>
+    </a>
+    <a href="rank.html" class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M19 11H5C3.89 11 3 11.9 3 13V19C3 20.1 3.89 21 5 21H19C20.1 21 21 20.1 21 19V13C21 11.9 20.11 11 19 11ZM17 17H7V15H17V17ZM17 9H7V7H17V9ZM10 13H7V11H10V13Z" fill="currentColor"/>
+      </svg>
+      <span>Video Ranker</span>
+    </a>
+    <a href="ai-features.html" class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM16.5 14H15.5C14.95 14 14.5 13.55 14.5 13V11C14.5 10.45 14.95 10 15.5 10H16.5C17.05 10 17.5 10.45 17.5 11V13C17.5 13.55 17.05 14 16.5 14ZM11 14H10C9.45 14 9 13.55 9 13V11C9 10.45 9.45 10 10 10H11C11.55 10 12 10.45 12 11V13C12 13.55 11.55 14 11 14ZM7 14H6C5.45 14 5 13.55 5 13V11C5 10.45 5.45 10 6 10H7C7.55 10 8 10.45 8 11V13C8 13.55 7.55 14 7 14Z" fill="currentColor"/>
+      </svg>
+      <span>Other AI Features</span>
+    </a>
+    <a href="profile.html" class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 12C14.21 12 16 10.21 16 8C16 5.79 14.21 4 12 4C9.79 4 8 5.79 8 8C8 10.21 9.79 12 12 12ZM12 14C9.33 14 4 15.34 4 18V20H20V18C20 15.34 14.67 14 12 14Z" fill="currentColor"/>
+      </svg>
+      <span>Profile</span>
+    </a>
+  </nav>
+
+<script>
+  const MAX_USES = 3;
+  const LIMIT_HOURS = 24;
+  const USAGE_KEY = "keywordToolUsage";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDvPh9-4rBudImlB5H2e7Nc2pebp9I8pxo",
+    authDomain: "hamexy-9a9b2.firebaseapp.com",
+    databaseURL: "https://hamexy-9a9b2-default-rtdb.firebaseio.com",
+    projectId: "hamexy-9a9b2",
+    storageBucket: "hamexy-9a9b2.appspot.com",
+    messagingSenderId: "734752990199",
+    appId: "1:734752990199:web:058d695f2d7d05be4584f2",
+    measurementId: "G-051PG7LEL5"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+
+  function showMessageBox(message) {
+    document.getElementById('messageBoxText').textContent = message;
+    document.getElementById('messageBoxOverlay').classList.add('show');
+  }
+
+  function hideMessageBox() {
+    document.getElementById('messageBoxOverlay').classList.remove('show');
+  }
+
+  document.getElementById('messageBoxCloseBtn').addEventListener('click', hideMessageBox);
+
+  function getUsage() {
+    const raw = localStorage.getItem(USAGE_KEY);
+    if (!raw) return { count: 0, timestamp: Date.now() };
+    return JSON.parse(raw);
+  }
+
+  function updateUsage() {
+    const usage = getUsage();
+    usage.count += 1;
+    usage.timestamp = Date.now();
+    localStorage.setItem(USAGE_KEY, JSON.stringify(usage));
+  }
+
+  function resetUsageIfExpired() {
+    const usage = getUsage();
+    const timePassed = (Date.now() - usage.timestamp) / (1000 * 60 * 60);
+    if (timePassed > LIMIT_HOURS) {
+      localStorage.setItem(USAGE_KEY, JSON.stringify({ count: 0, timestamp: Date.now() }));
+    }
+  }
+
+  // Check login
+  window.addEventListener('DOMContentLoaded', () => {
+    const loggedInUser = localStorage.getItem('loggedInUser');
+    if (!loggedInUser) {
+      showMessageBox('Please log in first to access this feature.');
+      setTimeout(() => window.location.href = 'login.html', 2000);
+      return;
+    }
+    resetUsageIfExpired();
+  });
+
+  const input = document.getElementById('keywordInput');
+  const suggestionsList = document.getElementById('suggestionsList');
+  const copyBtn = document.getElementById('copyBtn');
+  const selectAllBtn = document.getElementById('selectAllBtn');
+  const searchBtn = document.getElementById('searchBtn');
+  const loadingBar = document.getElementById('loadingBar');
+
+  function getSuggestions(query) {
+    return new Promise((resolve, reject) => {
+      const callbackName = 'ytCallback_' + Date.now();
+      const script = document.createElement('script');
+
+      window[callbackName] = data => {
+        document.body.removeChild(script);
+        delete window[callbackName];
+        const raw = data[1] || [];
+        resolve(raw.map(item => Array.isArray(item) ? item[0] : item).filter(Boolean));
+      };
+
+      script.onerror = () => {
+        delete window[callbackName];
+        reject(new Error("Failed to Load KeyWord Please Try Again ."));
+      };
+
+      script.src = `https://suggestqueries.google.com/complete/search?client=youtube&ds=yt&q=${encodeURIComponent(query)}&callback=${callbackName}`;
+      document.body.appendChild(script);
+    });
+  }
+
+  searchBtn.addEventListener('click', async () => {
+    resetUsageIfExpired();
+    const usage = getUsage();
+
+    if (usage.count >= MAX_USES) {
+      showMessageBox(`❌ You have used this tool 3 times in the last 24 hours.\nTry Again After 24 Hour Or Buy Paid Plan To Use Unlimited.`);
+      return;
+    }
+
+    const mainKeyword = input.value.trim();
+    if (!mainKeyword) {
+      showMessageBox("Please enter a keyword to search.");
+      return;
+    }
+
+    loadingBar.classList.add('show');
+    suggestionsList.innerHTML = `<li style="text-align:center;">Loading Keywords..</li>`;
+    copyBtn.classList.remove('show');
+    selectAllBtn.classList.remove('show');
+
+    try {
+      const all = new Set();
+      const main = await getSuggestions(mainKeyword);
+      main.forEach(k => all.add(k));
+      for (const kw of main.slice(0, 10)) {
+        const sub = await getSuggestions(kw);
+        sub.forEach(k => all.add(k));
+      }
+      displaySuggestions([...all]);
+      updateUsage();
+    } catch (err) {
+      console.error(err);
+      showMessageBox("Keyword fetch failed. Try again.");
+    } finally {
+      loadingBar.classList.remove('show');
+    }
+  });
+
+  function displaySuggestions(keywords) {
+    suggestionsList.innerHTML = '';
+    if (keywords.length === 0) {
+      suggestionsList.innerHTML = `<li>No Keyword found.</li>`;
+      return;
+    }
+
+    keywords.forEach(keyword => {
+      const li = document.createElement('li');
+      const cb = document.createElement('input');
+      cb.type = 'checkbox';
+      cb.className = 'kw-checkbox';
+      cb.value = keyword;
+      cb.addEventListener('change', updateCopyBtn);
+      li.appendChild(cb);
+      li.appendChild(document.createTextNode(keyword));
+      suggestionsList.appendChild(li);
+    });
+
+    selectAllBtn.classList.add('show');
+    updateCopyBtn();
+  }
+
+  function updateCopyBtn() {
+    const anyChecked = document.querySelectorAll('.kw-checkbox:checked').length > 0;
+    copyBtn.classList.toggle('show', anyChecked);
+  }
+
+  copyBtn.addEventListener('click', () => {
+    const selected = Array.from(document.querySelectorAll('.kw-checkbox:checked')).map(cb => cb.value).join('\n');
+    const ta = document.createElement('textarea');
+    ta.value = selected;
+    document.body.appendChild(ta);
+    ta.select();
+    try {
+      document.execCommand('copy');
+      showMessageBox("Copied to clipboard!");
+    } catch {
+      showMessageBox("Copy failed. Try manually.");
+    }
+    document.body.removeChild(ta);
+  });
+
+  selectAllBtn.addEventListener('click', () => {
+    const checkboxes = document.querySelectorAll('.kw-checkbox');
+    const allSelected = Array.from(checkboxes).every(cb => cb.checked);
+    checkboxes.forEach(cb => cb.checked = !allSelected);
+    updateCopyBtn();
+  });
+  // Premium restriction logic
+function showPremiumPopup() {
+  document.getElementById('premiumPopupOverlay').classList.add('show');
+}
+
+function hidePremiumPopup() {
+  document.getElementById('premiumPopupOverlay').classList.remove('show');
+}
+
+document.getElementById('premiumPopupCloseBtn').addEventListener('click', hidePremiumPopup);
+
+// Restrict all nav-item clicks
+document.querySelectorAll('.nav-item').forEach(item => {
+  item.addEventListener('click', function (e) {
+    e.preventDefault(); // Block navigation
+    showPremiumPopup();
+  });
+});
+</script>
+</body>
+</html>

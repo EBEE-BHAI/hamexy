@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Terms of Service - Hamexy AI SEO Tools</title>
+  <meta name="description" content="Read the comprehensive Terms of Service for Hamexy, your AI-powered YouTube SEO and growth platform. Understand your rights and obligations when using our tools.">
+  <meta name="keywords" content="Hamexy, Terms of Service, Legal, AI SEO, YouTube Tools, User Agreement, Website Terms">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="YOUR_WEBSITE_URL_HERE/terms.html">
+  <meta property="og:title" content="Terms of Service - Hamexy AI SEO Tools">
+  <meta property="og:description" content="Read the comprehensive Terms of Service for Hamexy, your AI-powered YouTube SEO and growth platform.">
+  <meta property="og:image" content="https://placehold.co/1200x630/121212/FF0000?text=Hamexy+Terms">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="YOUR_WEBSITE_URL_HERE/terms.html">
+  <meta property="twitter:title" content="Terms of Service - Hamexy AI SEO Tools">
+  <meta property="twitter:description" content="Read the comprehensive Terms of Service for Hamexy, your AI-powered YouTube SEO and growth platform.">
+  <meta property="twitter:image" content="https://placehold.co/1200x675/121212/FF0000?text=Hamexy+Terms+Twitter">
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    /* Global Box-Sizing for better responsiveness */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* CSS Variables for a Dark, Cool Theme - Consistent with other pages */
+    :root {
+      --primary-red: #FF0000; /* YouTube Red */
+      --dark-red: #CC0000;
+      --background-dark: #121212; /* Deep dark background */
+      --card-background: #1e1e1e; /* Slightly lighter for cards */
+      --border-color: #333;
+      --text-light: #e0e0e0; /* Light text for readability */
+      --text-medium: #888; /* For placeholders, secondary text */
+      --shadow-color: rgba(0, 0, 0, 0.7); /* Deep shadows */
+      --accent-blue: #007bff; /* A subtle blue for contrast/hover */
+    }
+
+    html {
+      scroll-behavior: smooth; /* Smooth scrolling for anchor links */
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--background-dark);
+      color: var(--text-light);
+      line-height: 1.6;
+      overflow-x: hidden; /* Prevent horizontal scroll */
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* Header & Navigation - Consistent with homepage */
+    header {
+      width: 100%;
+      background: linear-gradient(to right, #222, #181818);
+      padding: 15px 20px;
+      box-shadow: 0 4px 15px var(--shadow-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      transition: background 0.3s ease, padding 0.3s ease;
+    }
+
+    header.scrolled {
+      padding: 10px 20px;
+      background: rgba(18, 18, 18, 0.95);
+      box-shadow: 0 2px 10px var(--shadow-color);
+    }
+
+    .logo {
+      font-size: 1.8em;
+      font-weight: 900;
+      color: var(--primary-red);
+      text-decoration: none;
+      letter-spacing: 1px;
+      text-shadow: 0 0 10px var(--primary-red);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 30px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-light);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 1.05em;
+      position: relative;
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -5px;
+      left: 0;
+      background-color: var(--primary-red);
+      transition: width 0.3s ease-out;
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .nav-links a:hover {
+      color: var(--primary-red);
+    }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+      gap: 5px;
+    }
+
+    .hamburger div {
+      width: 25px;
+      height: 3px;
+      background-color: var(--text-light);
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+
+    .nav-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(18, 18, 18, 0.98);
+      z-index: 999;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      transform: translateX(100%);
+      transition: transform 0.3s ease-in-out;
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .nav-overlay.open {
+      transform: translateX(0);
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .nav-overlay-links {
+      list-style: none;
+      text-align: center;
+    }
+
+    .nav-overlay-links li {
+      margin: 20px 0;
+    }
+
+    .nav-overlay-links a {
+      color: var(--text-light);
+      text-decoration: none;
+      font-size: 2em;
+      font-weight: 600;
+      transition: color 0.2s ease;
+    }
+
+    .nav-overlay-links a:hover {
+      color: var(--primary-red);
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 30px;
+      right: 30px;
+      font-size: 3em;
+      color: var(--text-light);
+      cursor: pointer;
+    }
+
+    /* Main Content Styling for Terms of Service */
+    main {
+      flex-grow: 1; /* Allows main content to take available vertical space */
+      padding: 80px 20px;
+      max-width: 900px;
+      margin: 0 auto;
+      background: var(--background-dark); /* Ensure background consistency */
+    }
+
+    main h1 {
+      font-size: 3em;
+      color: var(--primary-red);
+      text-align: center;
+      margin-bottom: 40px;
+      text-shadow: 2px 2px 8px var(--shadow-color);
+    }
+
+    main h2 {
+      font-size: 2em;
+      color: var(--text-light);
+      margin-top: 40px;
+      margin-bottom: 20px;
+      position: relative;
+      padding-bottom: 10px; /* Space for underline */
+    }
+
+    main h2::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 60px;
+      height: 3px;
+      background-color: var(--primary-red);
+      border-radius: 1.5px;
+    }
+
+    main h3 {
+      font-size: 1.5em;
+      color: var(--text-light);
+      margin-top: 30px;
+      margin-bottom: 15px;
+    }
+
+    main p {
+      font-size: 1em;
+      color: var(--text-medium);
+      margin-bottom: 15px;
+      text-align: left; /* Align text left for readability */
+    }
+
+    main ul {
+      list-style: disc;
+      margin-left: 30px;
+      margin-bottom: 15px;
+      color: var(--text-medium);
+    }
+
+    main ol {
+      list-style: decimal;
+      margin-left: 30px;
+      margin-bottom: 15px;
+      color: var(--text-medium);
+    }
+
+    main li {
+      margin-bottom: 8px;
+      font-size: 1em;
+    }
+
+    main a {
+      color: var(--primary-red);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    main a:hover {
+      color: var(--dark-red);
+      text-decoration: underline;
+    }
+
+    /* Footer - Consistent with homepage */
+    footer {
+      background: linear-gradient(to right, #222, #181818);
+      color: var(--text-medium);
+      padding: 40px 20px;
+      text-align: center;
+      font-size: 0.9em;
+      box-shadow: 0 -4px 15px var(--shadow-color);
+      margin-top: auto; /* Push footer to bottom */
+    }
+
+    footer .footer-links a {
+      color: var(--text-medium);
+      text-decoration: none;
+      margin: 0 10px;
+      transition: color 0.2s ease;
+    }
+
+    footer .footer-links a:hover {
+      color: var(--primary-red);
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 900px) {
+      header {
+        padding: 10px 15px;
+      }
+      .logo {
+        font-size: 1.6em;
+      }
+      .nav-links {
+        gap: 20px;
+      }
+      .nav-links a {
+        font-size: 1em;
+      }
+      main {
+        padding: 60px 15px;
+      }
+      main h1 {
+        font-size: 2.5em;
+      }
+      main h2 {
+        font-size: 1.8em;
+      }
+      main h3 {
+        font-size: 1.3em;
+      }
+      main p, main li {
+        font-size: 0.95em;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none; /* Hide desktop nav */
+      }
+      .hamburger {
+        display: flex; /* Show hamburger */
+      }
+      .logo {
+        font-size: 1.5em;
+      }
+    }
+
+    @media (max-width: 480px) {
+      header {
+        padding: 10px 10px;
+      }
+      .logo {
+        font-size: 1.3em;
+      }
+      main {
+        padding: 40px 10px;
+      }
+      main h1 {
+        font-size: 2em;
+      }
+      main h2 {
+        font-size: 1.6em;
+      }
+      main h3 {
+        font-size: 1.2em;
+      }
+      main p, main li {
+        font-size: 0.9em;
+      }
+      .nav-overlay-links a {
+        font-size: 1.5em;
+      }
+      .close-btn {
+        top: 20px;
+        right: 20px;
+        font-size: 2.5em;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header id="mainHeader">
+    <a href="index.html" class="logo">Hamexy</a>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="index.html#features">Features</a></li>
+        <li><a href="index.html#how-it-works">How It Works</a></li>
+        <li><a href="index.html#testimonials">Testimonials</a></li>
+        <li><a href="index.html#pricing">Pricing</a></li>
+        <li><a href="index.html#faq">FAQ</a></li>
+        <li><a href="login.html" class="btn btn-secondary">Login</a></li>
+        <li><a href="signup.html" class="btn">Sign Up</a></li>
+      </ul>
+    </nav>
+    <div class="hamburger" id="hamburger">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </header>
+
+  <div class="nav-overlay" id="navOverlay">
+    <div class="close-btn" id="closeOverlay">&times;</div>
+    <ul class="nav-overlay-links">
+      <li><a href="index.html#hero">Home</a></li>
+      <li><a href="index.html#features">Features</a></li>
+      <li><a href="index.html#how-it-works">How It Works</a></li>
+      <li><a href="index.html#testimonials">Testimonials</a></li>
+      <li><a href="index.html#pricing">Pricing</a></li>
+      <li><a href="index.html#faq">FAQ</a></li>
+      <li><a href="login.html">Login</a></li>
+      <li><a href="signup.html">Sign Up</a></li>
+    </ul>
+  </div>
+
+  <main>
+    <h1>Terms of Service</h1>
+
+    <p>Last updated: June 14, 2024</p>
+
+    <p>Please read these Terms of Service ("Terms", "Terms of Service") carefully before using the <a href="index.html">Hamexy</a> website (the "Service") operated by Hamexy ("us", "we", or "our").</p>
+
+    <p>Your access to and use of the Service is conditioned upon your acceptance of and compliance with these Terms. These Terms apply to all visitors, users, and others who wish to access or use the Service.</p>
+
+    <p>By accessing or using the Service, you agree to be bound by these Terms. If you disagree with any part of the terms, then you do not have permission to access the Service.</p>
+
+    <h2>1. User Accounts</h2>
+    <p>When you create an account with us, you guarantee that you are above the age of 18, and that the information you provide us is accurate, complete, and current at all times. Inaccurate, incomplete, or obsolete information may result in the immediate termination of your account on the Service.</p>
+    <p>You are responsible for maintaining the confidentiality of your account and password, including but not limited to the restriction of access to your computer and/or account. You agree to accept responsibility for any and all activities or actions that occur under your account and/or password, whether your password is with our Service or a third-party service. You must notify us immediately upon becoming aware of any breach of security or unauthorized use of your account.</p>
+
+    <h2>2. Services Offered</h2>
+    <p>Hamexy provides AI-powered tools for YouTube SEO, including but not limited to:</p>
+    <ul>
+      <li>Keyword Research</li>
+      <li>Title Generation</li>
+      <li>Description Generation</li>
+      <li>Video Ranking Insights (where applicable)</li>
+      <li>Other AI Features</li>
+    </ul>
+    <p>Access to these services may vary based on your selected plan (Free, Basic, Pro), as detailed on our <a href="index.html#pricing">Pricing</a> page.</p>
+
+    <h2>3. Subscriptions and Payments</h2>
+    <h3>3.1. Free Plan</h3>
+    <p>The Free plan provides limited access to our features and a set number of credits per week. No payment information is required for the Free plan. Credits are refilled weekly, and excess usage may require upgrading to a paid plan.</p>
+    <h3>3.2. Paid Plans (Basic, Pro)</h3>
+    <p>Certain features of the Service are billed on a subscription basis ("Subscription(s)"). You will be billed in advance on a recurring and periodic basis ("Billing Cycle"). Billing cycles are set on a monthly basis.</p>
+    <p>A valid payment method, including credit card, is required to process the payment for your Subscription. You shall provide Hamexy with accurate and complete billing information. By submitting such payment information, you automatically authorize Hamexy to charge all Subscription fees incurred through your account to any such payment instruments.</p>
+    <p>Should automatic billing fail to occur for any reason, Hamexy will issue an electronic invoice indicating that you must proceed manually, within a certain deadline date, with the full payment corresponding to the billing period as indicated on the invoice.</p>
+    <h3>3.3. Fee Changes</h3>
+    <p>Hamexy, in its sole discretion and at any time, may modify Subscription fees. Any Subscription fee change will become effective at the end of the then-current Billing Cycle. We will provide you with reasonable prior notice of any change in Subscription fees to give you an opportunity to terminate your Subscription before such change becomes effective.</p>
+
+    <h2>4. Intellectual Property</h2>
+    <p>The Service and its original content (excluding content provided by users), features, and functionality are and will remain the exclusive property of Hamexy and its licensors. The Service is protected by copyright, trademark, and other laws of both the Pakistan and foreign countries. Our trademarks and trade dress may not be used in connection with any product or service without the prior written consent of Hamexy.</p>
+
+    <h2>5. Links To Other Web Sites</h2>
+    <p>Our Service may contain links to third-party web sites or services that are not owned or controlled by Hamexy.</p>
+    <p>Hamexy has no control over, and assumes no responsibility for the content, privacy policies, or practices of any third-party web sites or services. We do not warrant the offerings of any of these entities/individuals or their websites.</p>
+    <p>You acknowledge and agree that Hamexy shall not be responsible or liable, directly or indirectly, for any damage or loss caused or alleged to be caused by or in connection with use of or reliance on any such content, goods or services available on or through any such third-party web sites or services.</p>
+    <p>We strongly advise you to read the terms and conditions and privacy policies of any third-party web sites or services that you visit.</p>
+
+    <h2>6. Termination</h2>
+    <p>We may terminate or suspend your account and bar access to the Service immediately, without prior notice or liability, under our sole discretion, for any reason whatsoever and without limitation, including but not limited to a breach of the Terms.</p>
+    <p>If you wish to terminate your account, you may simply discontinue using the Service.</p>
+    <p>All provisions of the Terms which by their nature should survive termination shall survive termination, including, without limitation, ownership provisions, warranty disclaimers, indemnity and limitations of liability.</p>
+
+    <h2>7. Indemnification</h2>
+    <p>You agree to defend, indemnify, and hold harmless Hamexy and its licensee and licensors, and their employees, contractors, agents, officers, and directors, from and against any and all claims, damages, obligations, losses, liabilities, costs or debt, and expenses (including but not limited to attorney's fees), resulting from or arising out of a) your use and access of the Service, by you or any person using your account and password; b) a breach of these Terms, or c) Content posted on the Service.</p>
+
+    <h2>8. Disclaimer</h2>
+    <p>Your use of the Service is at your sole risk. The Service is provided on an "AS IS" and "AS AVAILABLE" basis. The Service is provided without warranties of any kind, whether express or implied, including, but not limited to, implied warranties of merchantability, fitness for a particular purpose, non-infringement or course of performance.</p>
+    <p>Hamexy its subsidiaries, affiliates, and its licensors do not warrant that a) the Service will function uninterrupted, secure or available at any particular time or location; b) any errors or defects will be corrected; c) the Service is free of viruses or other harmful components; or d) the results of using the Service will meet your requirements.</p>
+
+    <h2>9. Governing Law</h2>
+    <p>These Terms shall be governed and construed in accordance with the laws of Pakistan, without regard to its conflict of law provisions.</p>
+    <p>Our failure to enforce any right or provision of these Terms will not be considered a waiver of those rights. If any provision of these Terms is held to be invalid or unenforceable by a court, the remaining provisions of these Terms will remain in effect. These Terms constitute the entire agreement between us regarding our Service, and supersede and replace any prior agreements we might have had between us regarding the Service.</p>
+
+    <h2>10. Changes To Terms</h2>
+    <p>We reserve the right, at our sole discretion, to modify or replace these Terms at any time. If a revision is material, we will provide at least 30 days' notice prior to any new terms taking effect. What constitutes a material change will be determined at our sole discretion.</p>
+    <p>By continuing to access or use our Service after any revisions become effective, you agree to be bound by the revised terms. If you do not agree to the new terms, you are no longer authorized to use the Service.</p>
+
+    <h2>11. Contact Us</h2>
+    <p>If you have any questions about these Terms, please contact us:</p>
+    <ul>
+      <li>By email: hamexsolutions@gmail.com</li>
+          <li>By phone: +92 370 1078792 (WhatsApp)</li>
+    </ul>
+  </main>
+
+  <footer>
+    <p>&copy; 2024 Hamexy. All rights reserved.</p>
+    <div class="footer-links">
+          </div>
+  </footer>
+
+  <script>
+    // Header Scroll Effect - Consistent with homepage
+    const mainHeader = document.getElementById('mainHeader');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        mainHeader.classList.add('scrolled');
+      } else {
+        mainHeader.classList.remove('scrolled');
+      }
+    });
+
+    // Hamburger Menu Toggle - Consistent with homepage
+    const hamburger = document.getElementById('hamburger');
+    const navOverlay = document.getElementById('navOverlay');
+    const closeOverlay = document.getElementById('closeOverlay');
+    const navOverlayLinks = document.querySelectorAll('#navOverlay a');
+
+    hamburger.addEventListener('click', () => {
+      navOverlay.classList.add('open');
+    });
+
+    closeOverlay.addEventListener('click', () => {
+      navOverlay.classList.remove('open');
+    });
+
+    //Close overlay when a link is clicked (and handle internal/external links)
+    navOverlayLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        // Only prevent default if it's an internal hash link or a link that doesn't cause a full page reload
+        if (link.hash) { // Check if it's a hash link like #hero
+            e.preventDefault(); // Prevent default hash jump
+            navOverlay.classList.remove('open'); // Close overlay
+            setTimeout(() => { // Smooth scroll after closing overlay
+                document.querySelector(link.hash).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            }, 300); // Small delay to allow overlay to close
+        } else {
+            // For external links or full page reloads, just close overlay and let default behavior occur
+            navOverlay.classList.remove('open');
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>
+

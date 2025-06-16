@@ -1,0 +1,71 @@
+/* styles.css */
+
+/* General Reset */
+
+{ margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+
+
+body { line-height: 1.6; color: #333; background-color: #fff; }
+
+.container { width: 90%; max-width: 1200px; margin: auto; padding: 2rem 0; }
+
+h1, h2, h3, h4 { margin-bottom: 1rem; }
+
+h2 { font-size: 2.5rem; color: #222; text-align: center; margin-bottom: 2rem; }
+
+/* Navigation */ header { background-color: #0d1117; color: #fff; padding: 1rem 0; position: sticky; top: 0; z-index: 1000; }
+
+.logo { font-size: 1.8rem; font-weight: bold; }
+
+nav { display: flex; justify-content: space-between; align-items: center; }
+
+.nav-links { list-style: none; display: flex; gap: 1.2rem; }
+
+.nav-links a { color: #fff; text-decoration: none; font-weight: 500; transition: color 0.3s; }
+
+.nav-links a:hover { color: #00aaff; }
+
+.hamburger { display: none; font-size: 1.8rem; cursor: pointer; }
+
+/* Hero */ #hero { background: linear-gradient(to right, #0f2027, #203a43, #2c5364); color: #fff; padding: 4rem 0; text-align: center; }
+
+#hero h2 { font-size: 3rem; margin-bottom: 1rem; }
+
+#hero span { color: #00c6ff; }
+
+#hero p { font-size: 1.2rem; max-width: 700px; margin: auto; margin-bottom: 2rem; }
+
+/* Buttons */ .btn { padding: 0.8rem 1.6rem; background-color: #00aaff; color: #fff; text-decoration: none; border-radius: 5px; transition: background-color 0.3s; }
+
+.btn:hover { background-color: #0077aa; }
+
+.btn.primary { background-color: #00c6ff; }
+
+/* Sections */ section { padding: 4rem 0; }
+
+section.light-bg { background-color: #f7f9fb; }
+
+.features-grid, .tool-showcase, .plan-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; text-align: center; }
+
+.feature, .tool-card, .plan { background: #fff; padding: 1.5rem; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); transition: transform 0.3s; }
+
+.feature:hover, .tool-card:hover, .plan:hover { transform: translateY(-5px); }
+
+.plan.premium { border: 2px solid #00c6ff; }
+
+.review { margin-bottom: 1.5rem; padding: 1rem; background-color: #f2f2f2; border-radius: 8px; }
+
+.faq-item { margin-bottom: 1.5rem; }
+
+.faq-item h4 { margin-bottom: 0.5rem; color: #111; }
+
+footer { text-align: center; padding: 2rem; background-color: #0d1117; color: #aaa; }
+
+/* Responsive */ @media (max-width: 768px) { .nav-links { display: none; flex-direction: column; background-color: #0d1117; position: absolute; top: 60px; right: 0; width: 200px; padding: 1rem; z-index: 100; }
+
+.nav-links.active { display: flex; }
+
+.hamburger { display: block; } }
+
+
+

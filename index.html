@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hamexy: AI SEO Tools to Grow Your YouTube Channel</title>
+  <meta name="description" content="Hamexy offers AI-powered YouTube SEO tools including keyword research, title generation, description generation, and more to help you grow on YouTube. Explore our free and paid plans!">
+  <meta name="keywords" content="Hamexy, AI SEO, Grow On YouTube, YouTube SEO Tools, Keyword Research, Title Generator, Description Generator, Video Marketing, YouTube Growth, AI Content">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="YOUR_WEBSITE_URL_HERE/index.html">
+  <meta property="og:title" content="Hamexy: AI SEO Tools to Grow Your YouTube Channel">
+  <meta property="og:description" content="Hamexy offers AI-powered YouTube SEO tools including keyword research, title generation, description generation, and more to help you grow on YouTube.">
+  <meta property="og:image" content="https://placehold.co/1200x630/121212/FF0000?text=Hamexy+Social">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="YOUR_WEBSITE_URL_HERE/index.html">
+  <meta property="twitter:title" content="Hamexy: AI SEO Tools to Grow Your YouTube Channel">
+  <meta property="twitter:description" content="Hamexy offers AI-powered YouTube SEO tools including keyword research, title generation, description generation, and more to help you grow on YouTube.">
+  <meta property="twitter:image" content="https://placehold.co/1200x675/121212/FF0000?text=Hamexy+Twitter">
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    /* Global Box-Sizing for better responsiveness */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* CSS Variables for a Dark, Cool Theme - Consistent with other pages */
+    :root {
+      --primary-red: #FF0000; /* YouTube Red */
+      --dark-red: #CC0000;
+      --background-dark: #121212; /* Deep dark background */
+      --card-background: #1e1e1e; /* Slightly lighter for cards */
+      --border-color: #333;
+      --text-light: #e0e0e0; /* Light text for readability */
+      --text-medium: #888; /* For placeholders, secondary text */
+      --shadow-color: rgba(0, 0, 0, 0.7); /* Deep shadows */
+      --accent-blue: #007bff; /* A subtle blue for contrast/hover */
+    }
+
+    html {
+      scroll-behavior: smooth; /* Smooth scrolling for anchor links */
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--background-dark);
+      color: var(--text-light);
+      line-height: 1.6;
+      overflow-x: hidden; /* Prevent horizontal scroll */
+    }
+
+    /* Reusable Section Styles */
+    section {
+      padding: 80px 20px;
+      text-align: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      min-height: 50vh; /* Ensure sections are visible */
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    section:nth-of-type(even) {
+      background-color: #1a1a1a; /* Slightly different background for alternating sections */
+    }
+
+    h1, h2, h3 {
+      font-weight: 800;
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 8px var(--shadow-color);
+    }
+
+    h1 {
+      font-size: 3.5em; /* Hero title size */
+      color: var(--primary-red);
+      line-height: 1.1;
+    }
+
+    h2 {
+      font-size: 2.8em;
+      color: var(--text-light);
+      margin-top: 20px; /* Space from top of section */
+      margin-bottom: 40px;
+      position: relative;
+    }
+
+    h2::after {
+      content: '';
+      position: absolute;
+      bottom: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 4px;
+      background-color: var(--primary-red);
+      border-radius: 2px;
+    }
+
+    h3 {
+      font-size: 2em;
+      color: var(--primary-red);
+      margin-bottom: 25px;
+    }
+
+    p {
+      font-size: 1.1em;
+      margin-bottom: 20px;
+      color: var(--text-medium);
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-block;
+      padding: 15px 30px;
+      background: var(--primary-red);
+      color: white;
+      text-decoration: none;
+      border-radius: 30px;
+      font-weight: 600;
+      font-size: 1.1em;
+      box-shadow: 0 5px 15px rgba(255, 0, 0, 0.4);
+      transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+      border: none;
+      cursor: pointer;
+      margin: 10px;
+    }
+
+    .btn:hover {
+      background: var(--dark-red);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(255, 0, 0, 0.6);
+    }
+
+    .btn-secondary {
+      background: var(--card-background);
+      border: 1px solid var(--border-color);
+      color: var(--text-light);
+      box-shadow: 0 5px 15px var(--shadow-color);
+    }
+
+    .btn-secondary:hover {
+      background: #333;
+      border-color: #555;
+      box-shadow: 0 8px 25px var(--shadow-color);
+    }
+
+    /* Header & Navigation */
+    header {
+      width: 100%;
+      background: linear-gradient(to right, #222, #181818);
+      padding: 15px 20px;
+      box-shadow: 0 4px 15px var(--shadow-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      transition: background 0.3s ease, padding 0.3s ease;
+    }
+
+    header.scrolled {
+      padding: 10px 20px;
+      background: rgba(18, 18, 18, 0.95); /* Slightly transparent when scrolled */
+      box-shadow: 0 2px 10px var(--shadow-color);
+    }
+
+    .logo {
+      font-size: 1.8em;
+      font-weight: 900;
+      color: var(--primary-red);
+      text-decoration: none;
+      letter-spacing: 1px;
+      text-shadow: 0 0 10px var(--primary-red);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 30px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-light);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 1.05em;
+      position: relative;
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -5px;
+      left: 0;
+      background-color: var(--primary-red);
+      transition: width 0.3s ease-out;
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .nav-links a:hover {
+      color: var(--primary-red);
+    }
+
+    .hamburger {
+      display: none; /* Hidden on desktop */
+      flex-direction: column;
+      cursor: pointer;
+      gap: 5px;
+    }
+
+    .hamburger div {
+      width: 25px;
+      height: 3px;
+      background-color: var(--text-light);
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+
+    .nav-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(18, 18, 18, 0.98);
+      z-index: 999;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      transform: translateX(100%);
+      transition: transform 0.3s ease-in-out;
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .nav-overlay.open {
+      transform: translateX(0);
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .nav-overlay-links {
+      list-style: none;
+      text-align: center;
+    }
+
+    .nav-overlay-links li {
+      margin: 20px 0;
+    }
+
+    .nav-overlay-links a {
+      color: var(--text-light);
+      text-decoration: none;
+      font-size: 2em;
+      font-weight: 600;
+      transition: color 0.2s ease;
+    }
+
+    .nav-overlay-links a:hover {
+      color: var(--primary-red);
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 30px;
+      right: 30px;
+      font-size: 3em;
+      color: var(--text-light);
+      cursor: pointer;
+    }
+
+    /* Hero Section */
+    #hero {
+      padding: 30px 20px;
+      background: linear-gradient(rgba(18, 18, 18, 0.8), rgba(18, 18, 18, 0.8)), ;
+      /* Parallax effect with fixed background */
+      color: white;
+      min-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    #hero p {
+      font-size: 1.3em;
+      max-width: 900px;
+      margin-bottom: 40px;
+      color: #ccc;
+    }
+
+    /* Features Section */
+    #features {
+      background-color: var(--background-dark);
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+      margin-top: 50px;
+      width: 100%;
+    }
+
+    .feature-card {
+      background: var(--card-background);
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 8px 25px var(--shadow-color);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      text-align: left;
+      border: 1px solid var(--border-color);
+    }
+
+    .feature-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 12px 35px var(--shadow-color);
+    }
+
+    .feature-card svg {
+      width: 50px;
+      height: 50px;
+      fill: var(--primary-red);
+      margin-bottom: 15px;
+    }
+
+    .feature-card h3 {
+      font-size: 1.6em;
+      margin-bottom: 10px;
+      color: var(--text-light);
+    }
+
+    .feature-card p {
+      font-size: 1em;
+      color: var(--text-medium);
+      text-align: left;
+    }
+
+    /* How It Works Section */
+    #how-it-works .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 40px;
+      margin-top: 50px;
+      width: 100%;
+    }
+
+    .step-card {
+      background: var(--card-background);
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 8px 25px var(--shadow-color);
+      text-align: center;
+      border: 1px solid var(--border-color);
+    }
+
+    .step-card .step-number {
+      font-size: 2.5em;
+      font-weight: 900;
+      color: var(--primary-red);
+      margin-bottom: 15px;
+    }
+
+    .step-card h3 {
+      font-size: 1.8em;
+      color: var(--text-light);
+      margin-bottom: 10px;
+    }
+
+    .step-card p {
+      font-size: 1em;
+      color: var(--text-medium);
+    }
+
+    /* Testimonials Section */
+    #testimonials {
+      background-color: var(--background-dark);
+    }
+
+    .testimonial-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      margin-top: 50px;
+      width: 100%;
+    }
+
+    .testimonial-card {
+      background: var(--card-background);
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 8px 25px var(--shadow-color);
+      text-align: center;
+      border: 1px solid var(--border-color);
+    }
+
+    .testimonial-card p {
+      font-style: italic;
+      margin-bottom: 20px;
+      font-size: 1.05em;
+      color: var(--text-light);
+    }
+
+    .testimonial-card .author {
+      font-weight: 600;
+      color: var(--primary-red);
+      font-size: 1.1em;
+    }
+
+    /* Pricing Section */
+    #pricing .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      margin-top: 50px;
+      width: 100%;
+    }
+
+    .plan-card {
+      background: var(--card-background);
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 8px 25px var(--shadow-color);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .plan-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 12px 35px var(--shadow-color);
+      border-color: var(--primary-red);
+    }
+
+    .plan-card .plan-header h3 {
+      font-size: 2em;
+      color: var(--text-light);
+      margin-bottom: 10px;
+    }
+
+    .plan-card .price {
+      font-size: 2.5em;
+      font-weight: 900;
+      color: var(--primary-red);
+      margin-bottom: 15px;
+    }
+    .plan-card .price small {
+        font-size: 0.5em;
+        color: var(--text-medium);
+        font-weight: 400;
+    }
+
+    .plan-card .features-list {
+      list-style: none;
+      text-align: left;
+      margin: 20px 0 30px 0;
+    }
+
+    .plan-card .features-list li {
+      font-size: 1em;
+      color: var(--text-light);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .plan-card .features-list li::before {
+      content: '✔';
+      color: var(--primary-red);
+      font-weight: 800;
+    }
+
+    .plan-card .btn {
+      margin-top: auto; /* Push button to bottom */
+    }
+
+    /* CTA Section */
+    #cta {
+        background: var(--primary-red);
+        color: white;
+        padding: 60px 20px;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        margin: 50px auto;
+        max-width: 900px;
+        text-align: center;
+    }
+    #cta h2 {
+        color: white;
+        text-shadow: 1px 1px 5px rgba(0,0,0,0.4);
+    }
+    #cta h2::after {
+        background-color: white;
+    }
+    #cta p {
+        color: rgba(255, 255, 255, 0.9);
+        margin-bottom: 30px;
+    }
+    #cta .btn {
+        background: white;
+        color: var(--primary-red);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+    #cta .btn:hover {
+        background: #eee;
+        color: var(--dark-red);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+    }
+
+
+    /* FAQ Section */
+    #faq .faq-item {
+      background: var(--card-background);
+      margin-bottom: 20px;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px var(--shadow-color);
+      text-align: left;
+      border: 1px solid var(--border-color);
+    }
+
+    #faq .faq-item h3 {
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--text-light);
+      font-size: 1.2em;
+      margin-bottom: 0;
+      transition: color 0.2s ease;
+    }
+    #faq .faq-item h3:hover {
+        color: var(--primary-red);
+    }
+
+    #faq .faq-item h3 .arrow {
+      font-size: 1.5em;
+      transition: transform 0.3s ease;
+    }
+
+    #faq .faq-item h3.active .arrow {
+      transform: rotate(90deg);
+    }
+
+    #faq .faq-item p {
+      font-size: 0.95em;
+      color: var(--text-medium);
+      margin-top: 15px;
+      padding-left: 10px;
+      border-left: 3px solid var(--primary-red);
+      display: none; /* Hidden by default */
+      overflow: hidden;
+      max-height: 0;
+      transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+      opacity: 0;
+    }
+    #faq .faq-item p.show {
+        display: block;
+        max-height: 500px; /* Arbitrary large value */
+        opacity: 1;
+    }
+
+    /* Footer */
+    footer {
+      background: linear-gradient(to right, #222, #181818);
+      color: var(--text-medium);
+      padding: 40px 20px;
+      text-align: center;
+      font-size: 0.9em;
+      box-shadow: 0 -4px 15px var(--shadow-color);
+    }
+
+    footer .footer-links a {
+      color: var(--text-medium);
+      text-decoration: none;
+      margin: 0 10px;
+      transition: color 0.2s ease;
+    }
+
+    footer .footer-links a:hover {
+      color: var(--primary-red);
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 900px) {
+      h1 {
+        font-size: 2.8em;
+      }
+      h2 {
+        font-size: 2.2em;
+      }
+      section {
+        padding: 60px 15px;
+      }
+      .nav-links {
+        gap: 20px;
+      }
+      .nav-links a {
+        font-size: 1em;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none; /* Hide desktop nav */
+      }
+      .hamburger {
+        display: flex; /* Show hamburger */
+      }
+      header {
+        padding: 10px 15px;
+      }
+      .logo {
+        font-size: 1.5em;
+      }
+      h1 {
+        font-size: 2.5em;
+      }
+      h2 {
+        font-size: 2em;
+      }
+      h3 {
+        font-size: 1.6em;
+      }
+      p {
+        font-size: 1em;
+      }
+      .btn {
+        padding: 12px 25px;
+        font-size: 1em;
+      }
+      .feature-card h3 {
+        font-size: 1.4em;
+      }
+      .step-card h3 {
+        font-size: 1.5em;
+      }
+      .plan-card .price {
+        font-size: 2em;
+      }
+      .plan-card .features-list li {
+        font-size: 0.9em;
+      }
+    }
+
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 2em;
+      }
+      h2 {
+        font-size: 1.8em;
+      }
+      section {
+        padding: 40px 10px;
+      }
+      .features-grid, .how-it-works-grid, .testimonial-grid, .pricing-grid {
+        grid-template-columns: 1fr; /* Single column layout on very small screens */
+      }
+      .nav-overlay-links a {
+        font-size: 1.5em;
+      }
+      .close-btn {
+        top: 20px;
+        right: 20px;
+        font-size: 2.5em;
+      }
+      #cta {
+        padding: 40px 15px;
+        margin: 30px auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header id="mainHeader">
+    <a href="#" class="logo">Hamexy</a>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="#hero">Home</a></li>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#how-it-works">How It Works</a></li>
+        <li><a href="#testimonials">Testimonials</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="login.html" class="btn btn-secondary">Login</a></li>
+        <li><a href="signup.html" class="btn">Sign Up</a></li>
+      </ul>
+    </nav>
+    <div class="hamburger" id="hamburger">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </header>
+
+  <div class="nav-overlay" id="navOverlay">
+    <div class="close-btn" id="closeOverlay">&times;</div>
+    <ul class="nav-overlay-links">
+      <li><a href="#hero">Home</a></li>
+      <li><a href="#features">Features</a></li>
+      <li><a href="#how-it-works">How It Works</a></li>
+      <li><a href="#testimonials">Testimonials</a></li>
+      <li><a href="#pricing">Pricing</a></li>
+      <li><a href="#faq">FAQ</a></li>
+      <li><a href="login.html">Login</a></li>
+      <li><a href="signup.html">Sign Up</a></li>
+    </ul>
+  </div>
+
+  <main>
+    <!-- Hero Section -->
+    <section id="hero">
+      <h1>Unleash Your YouTube Growth with Hamexy AI SEO</h1>
+      <p>Hamexy is your ultimate AI-powered companion for YouTube SEO. Discover trending keywords, craft irresistible titles, generate perfect descriptions, and <b>grow on YouTube</b> faster than ever before. Our intelligent tools give you the edge you need to dominate your niche.</p>
+      <div>
+        <a href="signup.html" class="btn">Start Your Free Plan</a>
+        <a href="#features" class="btn btn-secondary">Learn More</a>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features">
+      <h2>Powerful Features for YouTube Success</h2>
+      <p>Hamexy provides a suite of <b>AI SEO</b> tools designed to elevate your content and boost your visibility. From in-depth research to creative generation, we cover it all.</p>
+      <div class="features-grid">
+        <div class="feature-card">
+          <svg fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+          </svg>
+             <h3>AI Keyword Research</h3>
+          <p>Uncover high-volume, low-competition keywords instantly. Get real-time suggestions to optimize your content and <B>Grow On YouTube</B> organically.</p>
+        </div>
+        <div class="feature-card">
+          <svg fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M5 4C3.34 4 2 5.34 2 7V17C2 18.66 3.34 20 5 20H19C20.66 20 22 18.66 22 17V7C22 5.34 20.66 4 19 4H5ZM13 13H5V11H13V13ZM19 13H15V11H19V13ZM19 9H5V7H19V9Z"/>
+          </svg>
+          <h3>Dynamic Title Generator</h3>
+          <p>Generate click-worthy, SEO-optimized titles in seconds, tailored to your topic and language, designed to capture viewer attention.</p>
+        </div>
+        <div class="feature-card">
+          <svg fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M19 3H5C3.89 3 3 3.9 3 5V19C3 20.1 3.89 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.11 3 19 3ZM17 17H7V15H17V17ZM17 13H7V11H17V13ZM17 9H7V7H17V9Z"/>
+          </svg>
+          <h3>Smart Description Creator</h3>
+          <p>Craft compelling video descriptions that rank! Includes options for emojis, keywords, and tone to maximize your reach.</p>
+        </div>
+        <div class="feature-card">
+          <svg fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M19 11H5C3.89 11 3 11.9 3 13V19C3 20.1 3.89 21 5 21H19C20.1 21 21 20.1 21 19V13C21 11.9 20.11 11 19 11ZM17 17H7V15H17V17ZM17 9H7V7H17V9ZM10 13H7V11H10V13Z"/>
+          </svg>
+          <h3>Video Rank Checker</h3>
+          <p>Monitor your video's performance and see how your content ranks against competitors. Track your progress with Hamexy insights.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how-it-works">
+      <h2>How Hamexy Helps You Dominate YouTube</h2>
+      <p>Our intuitive platform simplifies the complex world of YouTube SEO. Follow these simple steps to start seeing results.</p>
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-number">1</div>
+          <h3>Sign Up & Login</h3>
+          <p>Create your Hamexy account in minutes. Choose between our free plan or upgrade for more power.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-number">2</div>
+          <h3>Input Your Topic</h3>
+          <p>Tell our AI SEO what your video is about. Our intelligent algorithms get to work instantly.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-number">3</div>
+          <h3>Generate & Optimize</h3>
+          <p>Receive highly effective keywords, titles, and descriptions designed to Grow On YouTube with maximum impact.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-number">4</div>
+          <h3>Publish & Track</h3>
+          <p>Apply our suggestions, publish your video, and use our tools to track your improved ranking and views.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials">
+      <h2>What Our Users Say About Hamexy</h2>
+      <p>Don't just take our word for it. See how Hamexy has transformed YouTube channels just like yours.</p>
+      <div class="testimonial-grid">
+        <div class="testimonial-card">
+          <p>"Hamexy's keyword tool is a game-changer! My views have skyrocketed since I started using their AI SEO suggestions. Highly recommend!"</p>
+          <div class="author">- John Doe, Tech Reviewer</div>
+        </div>
+        <div class="testimonial-card">
+          <p>"Generating titles used to take hours. Now with Hamexy, I get perfect, clickable titles in seconds. It's truly helping me grow on YouTube."</p>
+          <div class="author">- Jane Smith, Gaming Creator</div>
+        </div>
+        <div class="testimonial-card">
+          <p>"The description generator is fantastic! It saves so much time and ensures my videos are always SEO-friendly. Best tool for content creators!"</p>
+          <div class="author">- Emily White, Lifestyle Vlogger</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing">
+      <h2>Unlock Your YouTube Potential</h2>
+      <p>Choose the plan that fits your growth ambitions. Start free, scale up, and experience the full power of **Hamexy**.</p>
+      <div class="pricing-grid">
+        <div class="plan-card">
+          <div class="plan-header">
+            <h3>Free Plan</h3>
+            <p class="price"><sup>$</sup>0<small>/Month</small></p>
+          </div>
+          <ul class="features-list">
+            <li>3 Credits/Week</li>
+            <li>Basic Keyword Research</li>
+             <li>Essential Support</li>
+            <li>Can't Use Any AI Feature'</li>
+          </ul>
+          <a href="signup.html?plan=Free" class="btn btn-secondary">Get Started Free</a>
+        </div>
+        
+        <div class="plan-card">
+          <div class="plan-header">
+            <h3>Premium Plan</h3>
+            <p class="price"><sup>$</sup>1.99<small>/Lifetime</small></p>
+          </div>
+          <ul class="features-list">
+            <li>Unlimited Credits</li>
+            <li>Premium Keyword Research</li>
+            <li>Unlimited Title Generation</li>
+            <li>Unlimited Description Generation</li>
+            <li>Dedicated Chat Support</li>
+            <li>Exclusive AI Features</li>
+            <li>Video Rank Tracking</li>
+            <li>1 on 1 Chat With SEO Guru</li>
+            <li>Complete SEO Course Included</li>
+            <li>Priority On Every Issue</li>
+            <li>Monthly Channel Audit Report</li>
+          </ul>
+          <a href="signup.html?plan=Pro" class="btn">Change My Life Now</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Call to Action Section -->
+    <section id="cta">
+        <h2>Ready to Supercharge Your YouTube Channel?</h2>
+        <p>Join thousands of creators who are already using **Hamexy** to **grow on YouTube** and achieve their dreams. Your success starts now!</p>
+        <a href="signup.html" class="btn">Sign Up Today!</a>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq">
+      <h2>Frequently Asked Questions</h2>
+      <div class="faq-container">
+        <div class="faq-item">
+          <h3 class="faq-question">What is Hamexy and how does it help me **grow on YouTube**? <span class="arrow">></span></h3>
+          <p class="faq-answer">Hamexy is an **AI SEO** platform designed specifically for YouTube creators. It provides tools for keyword research, title generation, description creation, and more, all powered by artificial intelligence to help you optimize your videos for higher rankings and more views.</p>
+        </div>
+        <div class="faq-item">
+          <h3 class="faq-question">How accurate are the **AI SEO** suggestions? <span class="arrow">></span></h3>
+          <p class="faq-answer">Our AI models are trained on vast datasets of YouTube content and SEO best practices. While AI suggestions are highly effective, we always recommend reviewing and customizing them to perfectly match your unique content and brand voice.</p>
+        </div>
+        <div class="faq-item">
+          <h3 class="faq-question">What is the difference between Free, Basic, and Pro plans? <span class="arrow">></span></h3>
+          <p class="faq-answer">The Free plan offers limited credits for basic usage, perfect for getting started. Basic and Pro plans provide significantly more or unlimited credits, advanced features, and priority support for serious creators looking to rapidly **grow on YouTube**.</p>
+        </div>
+        <div class="faq-item">
+          <h3 class="faq-question">Do you offer a free trial for paid plans? <span class="arrow">></span></h3>
+          <p class="faq-answer">While we don't offer a specific trial for paid plans, our Free plan allows you to experience the core functionalities of **Hamexy** without any cost. You can upgrade anytime!</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2024 Hamexy. All rights reserved.</p>
+    <div class="footer-links">
+   <a href="term.html">Terms of Services</a>
+    </div>
+  </footer>
+
+  <script>
+    // Header Scroll Effect
+    const mainHeader = document.getElementById('mainHeader');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        mainHeader.classList.add('scrolled');
+      } else {
+        mainHeader.classList.remove('scrolled');
+      }
+    });
+
+    // Hamburger Menu Toggle
+    const hamburger = document.getElementById('hamburger');
+    const navOverlay = document.getElementById('navOverlay');
+    const closeOverlay = document.getElementById('closeOverlay');
+    const navOverlayLinks = document.querySelectorAll('#navOverlay a');
+
+    hamburger.addEventListener('click', () => {
+      navOverlay.classList.add('open');
+    });
+
+    closeOverlay.addEventListener('click', () => {
+      navOverlay.classList.remove('open');
+    });
+
+    // Close overlay when a link is clicked
+    navOverlayLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        navOverlay.classList.remove('open');
+      });
+    });
+
+    // FAQ Accordion
+    const faqQuestions = document.querySelectorAll('.faq-question');
+
+    faqQuestions.forEach(question => {
+      question.addEventListener('click', () => {
+        const answer = question.nextElementSibling;
+        const arrow = question.querySelector('.arrow');
+
+        // Close all other open answers
+        faqQuestions.forEach(otherQuestion => {
+          if (otherQuestion !== question && otherQuestion.classList.contains('active')) {
+            otherQuestion.classList.remove('active');
+            otherQuestion.nextElementSibling.classList.remove('show');
+          }
+        });
+
+        // Toggle the clicked answer
+        question.classList.toggle('active');
+        answer.classList.toggle('show');
+      });
+    });
+  </script>
+
+</body>
+</html>
