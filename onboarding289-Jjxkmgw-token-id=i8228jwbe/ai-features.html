@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hamexy AI Features - AI SEO Tools</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* Global Box-Sizing for better responsiveness */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* CSS Variables for a Dark, Cool Theme - Consistent with other pages */
+    :root {
+      --primary-red: #FF0000; /* YouTube Red */
+      --dark-red: #CC0000;
+      --background-dark: #121212; /* Deep dark background */
+      --card-background: #1e1e1e; /* Slightly lighter for cards */
+      --border-color: #333;
+      --text-light: #e0e0e0; /* Light text for readability */
+      --text-medium: #888; /* For placeholders, secondary text */
+      --shadow-color: rgba(0, 0, 0, 0.7); /* Deep shadows */
+      --accent-blue: #007bff; /* A subtle blue for contrast/hover */
+    }
+
+    body {
+      font-family: 'Inter', sans-serif; /* Modern, clean font */
+      background: var(--background-dark);
+      color: var(--text-light);
+      line-height: 1.6;
+      overflow-x: hidden; /* Prevent horizontal scroll */
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      padding-bottom: 80px; /* Space for fixed bottom navigation */
+    }
+
+    /* Custom Alert/Message Box - Consistent */
+    .message-box-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    .message-box-overlay.show {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .message-box {
+        background-color: var(--card-background);
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 8px 30px var(--shadow-color);
+        text-align: center;
+        max-width: 350px;
+        transform: translateY(-20px);
+        transition: transform 0.3s ease;
+        border: 1px solid var(--border-color);
+    }
+
+    .message-box-overlay.show .message-box {
+        transform: translateY(0);
+    }
+
+    .message-box p {
+        margin-bottom: 25px;
+        font-size: 1.1em;
+        color: var(--text-light);
+    }
+
+    .message-box button {
+        background-color: var(--primary-red);
+        color: white;
+        border: none;
+        padding: 10px 25px;
+        border-radius: 25px;
+        cursor: pointer;
+        font-size: 1em;
+        transition: background-color 0.2s ease, transform 0.1s ease;
+    }
+
+    .message-box button:hover {
+        background-color: var(--dark-red);
+        transform: translateY(-1px);
+    }
+
+    /* Header Styling - Consistent */
+    header {
+      width: 100%;
+      background: linear-gradient(to right, #222, #181818);
+      padding: 15px 20px;
+      box-shadow: 0 4px 15px var(--shadow-color);
+      display: flex;
+      justify-content: center; /* Center header content */
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .logo {
+      font-size: 1.8em;
+      font-weight: 900;
+      color: var(--primary-red);
+      text-decoration: none;
+      letter-spacing: 1px;
+      text-shadow: 0 0 10px var(--primary-red);
+    }
+
+    /* Main Content Area */
+    main {
+      flex-grow: 1;
+      padding: 60px 20px;
+      max-width: 900px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    main h1 {
+      font-size: 3em;
+      color: var(--primary-red);
+      margin-bottom: 30px;
+      text-shadow: 2px 2px 8px var(--shadow-color);
+    }
+
+    /* AI Features Grid - MODIFIED FOR SMALLER BOXES */
+    .ai-features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); /* Smaller minmax */
+      gap: 20px; /* Reduced gap */
+      margin-top: 40px;
+      width: 100%;
+      justify-content: center;
+    }
+
+    .ai-features-grid:last-child:nth-child(odd) {
+      grid-column: 1 / -1;
+      justify-self: center;
+    }
+
+    .ai-feature-card {
+      background: var(--card-background);
+      border-radius: 15px;
+      box-shadow: 0 8px 25px var(--shadow-color);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+      border: 1px solid var(--border-color);
+      text-align: center;
+      padding-bottom: 15px; /* Adjust padding for smaller size */
+    }
+
+    .ai-feature-card:hover {
+      transform: translateY(-8px); /* Less vertical lift */
+      box-shadow: 0 10px 30px var(--shadow-color);
+      border-color: var(--primary-red);
+    }
+
+    .feature-image-container {
+      width: 100%;
+      padding-bottom: 100%; /* 1:1 aspect ratio */
+      position: relative;
+      overflow: hidden;
+      background-color: #0d0d0d;
+    }
+
+    .feature-image-container img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+
+    .ai-feature-card:hover .feature-image-container img {
+        transform: scale(1.03); /* Smaller zoom on hover */
+    }
+
+   .feature-content {
+  padding: 15px 10px 0; /* Reduced padding */
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  justify-content: space-between;
+  align-items: center; /* ADD THIS LINE: Centers children horizontally in a column flex container */
+}
+
+    .feature-content h3 {
+      font-size: 1em; /* Smaller font size for title */
+      color: var(--text-light);
+      margin-bottom: 10px; /* Reduced margin */
+      flex-grow: 1;
+      line-height: 1.3;
+    }
+
+    .use-now-button {
+      display: inline-block;
+      width: calc(100% - 20px); /* Adjust button width */
+      padding: 8px 10px; /* Smaller padding */
+      background: var(--primary-red);
+      color: white;
+      text-decoration: none;
+      border-radius: 8px; /* Slightly less rounded */
+      font-weight: 600;
+      font-size: 1em; /* Smaller font size */
+      box-shadow: 0 3px 8px rgba(255, 0, 0, 0.4);
+      transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+      border: none;
+      cursor: pointer;
+      margin-top: 10px; /* Reduced margin */
+    }
+
+    .use-now-button:hover {
+      background: var(--dark-red);
+      transform: translateY(-2px); /* Smaller lift */
+      box-shadow: 0 5px 12px rgba(255, 0, 0, 0.6);
+    }
+    .use-now-button:active {
+        transform: translateY(0);
+        box-shadow: 0 2px 5px rgba(255, 0, 0, 0.4);
+    }
+
+
+    /* Bottom Navigation Bar - Consistent */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: linear-gradient(to top, #222, #181818);
+      box-shadow: 0 -4px 15px var(--shadow-color);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 10px 0;
+      z-index: 999;
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-medium);
+      font-size: 0.85em;
+      text-decoration: none;
+      padding: 8px 5px;
+      border-radius: 8px;
+      transition: color 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
+      cursor: pointer;
+      flex: 1;
+      text-align: center;
+    }
+
+    .nav-item:hover {
+      color: var(--primary-red);
+      background-color: rgba(255, 0, 0, 0.1);
+      transform: translateY(-3px);
+    }
+
+    .nav-item svg {
+      width: 24px;
+      height: 24px;
+      margin-bottom: 5px;
+      fill: var(--text-medium);
+      transition: fill 0.2s ease;
+    }
+
+    .nav-item:hover svg {
+      fill: var(--primary-red);
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      header {
+        padding: 10px 15px;
+      }
+      .logo {
+        font-size: 1.5em;
+      }
+      main h1 {
+        font-size: 2.5em;
+      }
+      main {
+        padding: 40px 15px;
+      }
+      .ai-features-grid {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* Even smaller for tablets */
+        gap: 15px;
+      }
+      .ai-feature-card {
+        padding-bottom: 10px;
+      }
+      .feature-content h3 {
+          font-size: 0.9em;
+      }
+      .use-now-button {
+          font-size: 0.8em;
+          padding: 6px 8px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      header {
+        padding: 10px 10px;
+      }
+      .logo {
+        font-size: 1.3em;
+      }
+      main h1 {
+        font-size: 2em;
+      }
+      main {
+        padding: 30px 10px;
+      }
+      .ai-features-grid {
+        grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); /* 2 columns on small phone */
+        gap: 15px;
+      }
+      .nav-item {
+        font-size: 0.7em;
+        padding: 5px 2px;
+      }
+      .nav-item svg {
+        width: 18px;
+        height: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Custom Alert/Message Box -->
+  <div class="message-box-overlay" id="messageBoxOverlay">
+    <div class="message-box">
+      <p id="messageBoxText"></p>
+      <button id="messageBoxCloseBtn">OK</button>
+    </div>
+  </div>
+
+  <header>
+    <a href="index.html" class="logo">Hamexy AI Features</a>
+  </header>
+
+  <main>
+    <h1>Supercharge Your YouTube with AI</h1>
+    <p>Explore powerful AI tools designed to streamline your YouTube workflow, optimize your content, and accelerate your channel's growth.</p>
+
+    <div class="ai-features-grid" id="aiFeaturesGrid">
+      <!-- AI feature cards will be dynamically loaded here by JavaScript -->
+    </div>
+  </main>
+
+  <!-- Bottom Navigation Bar - Consistent -->
+  <nav class="bottom-nav">
+    <a href="keyword-research.html" class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM17 13H13V17H11V13H7V11H11V7H13V11H17V13Z" fill="currentColor"/>
+      </svg>
+      <span>Keyword Research</span>
+    </a>
+    <a href="tittle.html" class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M5 4C3.34 4 2 5.34 2 7V17C2 18.66 3.34 20 5 20H19C20.66 20 22 18.66 22 17V7C22 5.34 20.66 4 19 4H5ZM13 13H5V11H13V13ZM19 13H15V11H19V13ZM19 9H5V7H19V9Z" fill="currentColor"/>
+      </svg>
+      <span>Title Generator</span>
+    </a>
+    <a href="desc.html" class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M19 3H5C3.89 3 3 3.9 3 5V19C3 20.1 3.89 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.11 3 19 3ZM17 17H7V15H17V17ZM17 13H7V11H17V13ZM17 9H7V7H17V9Z" fill="currentColor"/>
+      </svg>
+      <span>Description Generator</span>
+    </a>
+    <a href="rank.html" class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M19 11H5C3.89 11 3 11.9 3 13V19C3 20.1 3.89 21 5 21H19C20.1 21 21 20.1 21 19V13C21 11.9 20.11 11 19 11ZM17 17H7V15H17V17ZM17 9H7V7H17V9ZM10 13H7V11H10V13Z" fill="currentColor"/>
+      </svg>
+      <span>Video Ranker</span>
+    </a>
+    <a href="ai-features.html" class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM16.5 14H15.5C14.95 14 14.5 13.55 14.5 13V11C14.5 10.45 14.95 10 15.5 10H16.5C17.05 10 17.5 10.45 17.5 11V13C17.5 13.55 17.05 14 16.5 14ZM11 14H10C9.45 14 9 13.55 9 13V11C9 10.45 9.45 10 10 10H11C11.55 10 12 10.45 12 11V13C12 13.55 11.55 14 11 14ZM7 14H6C5.45 14 5 13.55 5 13V11C5 10.45 5.45 10 6 10H7C7.55 10 8 10.45 8 11V13C8 13.55 7.55 14 7 14Z" fill="currentColor"/>
+      </svg>
+      <span>Other AI Features</span>
+    </a>
+    <a href="profile.html" class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 12C14.21 12 16 10.21 16 8C16 5.79 14.21 4 12 4C9.79 4 8 5.79 8 8C8 10.21 9.79 12 12 12ZM12 14C9.33 14 4 15.34 4 18V20H20V18C20 15.34 14.67 14 12 14Z" fill="currentColor"/>
+      </svg>
+      <span>Profile</span>
+    </a>
+  </nav>
+
+  <script>
+    // --- Custom Message Box Functions (replaces alert()) ---
+    function showMessageBox(message) {
+        const overlay = document.getElementById('messageBoxOverlay');
+        const text = document.getElementById('messageBoxText');
+        text.textContent = message;
+        overlay.classList.add('show');
+    }
+
+    function hideMessageBox() {
+        const overlay = document.getElementById('messageBoxOverlay');
+        overlay.classList.remove('show');
+    }
+
+    document.getElementById('messageBoxCloseBtn').addEventListener('click', hideMessageBox);
+
+    // --- AI Feature Data ---
+    const aiFeatures = [
+      {
+        title: "Hashtag Genreator",
+        image: "image/hashtag.png",
+        link: "hashtag.html"
+      },
+      {
+        title: "All Paid YouTube Courses",
+        image: "image/cors.jpeg",
+        link: "courses.html"
+      },
+      {
+        title: "AI Content Idea Maker",
+        image: "image/video.jpeg",
+        link: "video-idea.html"
+      },
+      {
+        title: "AI Hook Genreator",
+        image: "image/ai.jpeg",
+        link: "hook-maker.html"
+      },
+      {
+        title: "Video Upload Shedule Maker",
+        image: "image/shedule.jpeg",
+        link: "shedule.html"
+      }
+    ];
+
+    // --- Render AI Feature Cards ---
+    function renderAIFeatures() {
+      const aiFeaturesGrid = document.getElementById('aiFeaturesGrid');
+      aiFeaturesGrid.innerHTML = ''; // Clear existing content
+
+      aiFeatures.forEach(feature => {
+        const featureCard = document.createElement('div');
+        featureCard.classList.add('ai-feature-card');
+
+        featureCard.innerHTML = `
+          <div class="feature-image-container">
+            <img src="${feature.image}" alt="${feature.title} AI Tool Image" onerror="this.onerror=null; this.src='https://placehold.co/300x300/1e1e1e/888?text=Image+Error';">
+          </div>
+          <div class="feature-content">
+            <h3>${feature.title}</h3>
+            <button class="use-now-button" onclick="window.location.href='${feature.link}'">Use Now</button>
+          </div>
+        `;
+        aiFeaturesGrid.appendChild(featureCard);
+      });
+    }
+
+    // Call renderAIFeatures on page load
+    window.addEventListener('DOMContentLoaded', renderAIFeatures);
+
+    // --- Navigation bar redirection logic (consistent with other pages) ---
+    const navItems = document.querySelectorAll('.bottom-nav .nav-item');
+    navItems.forEach(item => {
+      item.addEventListener('click', (e) => {
+        e.preventDefault();
+        const targetPage = item.getAttribute('href');
+        if (targetPage) {
+          window.location.href = targetPage;
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>

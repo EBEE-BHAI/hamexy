@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Hamexy AI SEO Tools</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-database-compat.js"></script>
+  <!-- Optional: If you plan to use Firebase Authentication later, you'd include:
+  <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-auth-compat.js"></script>
+  -->
+  <style>
+    /* Global Box-Sizing for better responsiveness */
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    /* CSS Variables for a Dark, Cool Theme - Consistent with other pages */
+    :root {
+      --primary-red: #FF0000;
+      --dark-red: #CC0000;
+      --background-dark: #121212;
+      --card-background: #1e1e1e;
+      --border-color: #333;
+      --text-light: #e0e0e0;
+      --text-medium: #888;
+      --shadow-color: rgba(0, 0, 0, 0.7);
+      --accent-blue: #007bff;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--background-dark);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      color: var(--text-light);
+      margin: 0;
+      padding: 30px 0; /* Add padding for header/footer */
+      overflow-x: hidden;
+    }
+
+    /* Custom Alert/Message Box */
+    .message-box-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    .message-box-overlay.show {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .message-box {
+        background-color: var(--card-background);
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 8px 30px var(--shadow-color);
+        text-align: center;
+        max-width: 350px;
+        transform: translateY(-20px);
+        transition: transform 0.3s ease;
+        border: 1px solid var(--border-color);
+    }
+
+    .message-box-overlay.show .message-box {
+        transform: translateY(0);
+    }
+
+    .message-box p {
+        margin-bottom: 25px;
+        font-size: 1.1em;
+        color: var(--text-light);
+    }
+
+    .message-box button {
+        background-color: var(--primary-red);
+        color: white;
+        border: none;
+        padding: 10px 25px;
+        border-radius: 25px;
+        cursor: pointer;
+        font-size: 1em;
+        transition: background-color 0.2s ease, transform 0.1s ease;
+    }
+
+    .message-box button:hover {
+        background-color: var(--dark-red);
+        transform: translateY(-1px);
+    }
+
+    /* Header Styling - Consistent with other pages */
+    header {
+      width: 100%;
+      background: linear-gradient(to right, #222, #181818);
+      padding: 12px 0;
+      text-align: center;
+      box-shadow: 0 4px 15px var(--shadow-color);
+      margin-bottom: 30px; /* Adjusted for page layout */
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2.2em;
+      color: var(--primary-red);
+      letter-spacing: 1px;
+      text-shadow: 0 0 10px var(--primary-red);
+    }
+
+    /* Main Content Area */
+    .container {
+      width: 100%;
+      max-width: 450px; /* Adjusted max-width for form */
+      padding: 30px 25px;
+      background: var(--card-background);
+      border-radius: 15px;
+      box-shadow: 0 8px 25px var(--shadow-color);
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    h2 {
+      font-size: 2em;
+      color: var(--text-light);
+      margin-bottom: 25px;
+      text-shadow: 1px 1px 5px var(--shadow-color);
+    }
+
+    p.switch-page-link {
+      font-size: 1em;
+      color: var(--text-medium);
+      margin-bottom: 25px;
+    }
+
+    p.switch-page-link a {
+      color: var(--primary-red);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s ease;
+    }
+
+    p.switch-page-link a:hover {
+      color: var(--dark-red);
+      text-decoration: underline;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+      text-align: left; /* Align labels to left */
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--text-light);
+      font-size: 0.95em;
+      font-weight: 500;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 12px 18px;
+      font-size: 1em;
+      border-radius: 10px; /* Beautiful inputs */
+      border: 1px solid var(--border-color);
+      background: var(--background-dark); /* Darker input background */
+      color: var(--text-light);
+      box-shadow: inset 0 2px 5px var(--shadow-color);
+      transition: all 0.3s ease;
+    }
+
+    .form-group input::placeholder {
+      color: var(--text-medium);
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: var(--primary-red);
+      box-shadow: inset 0 2px 5px var(--shadow-color), 0 0 0 3px rgba(255, 0, 0, 0.2);
+    }
+
+    .submit-button {
+      width: 100%;
+      padding: 15px;
+      border: none;
+      border-radius: 10px;
+      background: var(--primary-red);
+      color: white;
+      font-size: 1.1em;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 5px 15px var(--shadow-color);
+      transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+      margin-top: 15px;
+    }
+
+    .submit-button:hover {
+      background: var(--dark-red);
+      transform: translateY(-2px);
+      box-shadow: 0 7px 20px var(--shadow-color);
+    }
+
+    .submit-button:disabled {
+        background-color: #555;
+        cursor: not-allowed;
+        box-shadow: none;
+        transform: none;
+    }
+
+    .google-auth-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        padding: 12px;
+        border: 1px solid var(--border-color);
+        border-radius: 10px;
+        background-color: var(--background-dark);
+        color: var(--text-light);
+        font-size: 1em;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+        margin-top: 15px;
+        box-shadow: 0 2px 8px var(--shadow-color);
+    }
+
+    .google-auth-button:hover {
+        background-color: #333;
+        border-color: #555;
+        box-shadow: 0 4px 12px var(--shadow-color);
+    }
+
+    .google-auth-button img {
+        width: 20px;
+        height: 20px;
+        margin-right: 10px;
+    }
+
+    /* Loading Spinner */
+    .spinner {
+        border: 4px solid rgba(255, 255, 255, 0.3);
+        border-top: 4px solid var(--primary-red);
+        border-radius: 50%;
+        width: 24px;
+        height: 24px;
+        animation: spin 1s linear infinite;
+        display: inline-block;
+        vertical-align: middle;
+        margin-right: 10px;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 1.8em;
+      }
+      .container {
+        padding: 25px 15px;
+        max-width: 90%;
+      }
+      h2 {
+        font-size: 1.8em;
+      }
+      .form-group input,
+      .submit-button,
+      .google-auth-button {
+        font-size: 0.95em;
+        padding: 10px 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Custom Message Box HTML -->
+  <div class="message-box-overlay" id="messageBoxOverlay">
+    <div class="message-box">
+      <p id="messageBoxText"></p>
+      <button id="messageBoxCloseBtn">OK</button>
+    </div>
+  </div>
+
+  <header>
+    <h1>Hamexy AI SEO Tools</h1>
+  </header>
+
+  <div class="container">
+    <h2>Welcome Back!</h2>
+    <p class="switch-page-link">Don't Have An Account? <a href="signup.html">Sign Up Here</a></p>
+
+    <form id="loginForm">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="Enter your email" required>
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="Enter your password" required>
+      </div>
+      <button type="submit" class="submit-button" id="loginSubmitBtn">Login</button>
+      <button type="button" class="google-auth-button" id="googleLoginBtn">
+        <img src="https://img.icons8.com/color/48/000000/google-logo.png" alt="Google logo"/>
+        Login With Google
+      </button>
+    </form>
+  </div>
+
+ <script>
+    // Firebase Configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyDvPh9-4rBudImlB5H2e7Nc2pebp9I8pxo",
+      authDomain: "hamexy-9a9b2.firebaseapp.com",
+      databaseURL: "https://hamexy-9a9b2-default-rtdb.firebaseio.com",
+      projectId: "hamexy-9a9b2",
+      storageBucket: "hamexy-9a9b2.appspot.com",
+      messagingSenderId: "734752990199",
+      appId: "1:734752990199:web:058d695f2d7d05be4584f2",
+      measurementId: "G-051PG7LEL5"
+    };
+
+    // Initialize Firebase
+    try {
+        firebase.initializeApp(firebaseConfig);
+        console.log("Firebase app initialized successfully.");
+    } catch (e) {
+        console.error("Firebase initialization failed:", e);
+        showMessageBox("Critical Error: Failed to initialize Firebase. Please check console for details and ensure correct configuration.", true);
+    }
+    const database = firebase.database();
+
+    // --- Custom Message Box Functions ---
+    function showMessageBox(message, isError = false) {
+        const overlay = document.getElementById('messageBoxOverlay');
+        const text = document.getElementById('messageBoxText');
+        text.innerHTML = message; // Use innerHTML to allow links/emojis
+        // text.style.color = isError ? 'red' : 'inherit'; // Optional: error styling
+        overlay.classList.add('show');
+    }
+
+    function hideMessageBox() {
+        const overlay = document.getElementById('messageBoxOverlay');
+        overlay.classList.remove('show');
+    }
+
+    document.getElementById('messageBoxCloseBtn').addEventListener('click', hideMessageBox);
+
+    // --- Login Form Submission Logic ---
+    const loginForm = document.getElementById('loginForm');
+    const loginSubmitBtn = document.getElementById('loginSubmitBtn');
+
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value.trim();
+
+      if (!email || !password) {
+          showMessageBox('Please enter both email and password.');
+          return;
+      }
+
+      loginSubmitBtn.disabled = true;
+      loginSubmitBtn.innerHTML = '<span class="spinner"></span> Logging in...';
+
+      try {
+        // Define the order of checks: super_users -> free_users -> premium_users
+        const userTiers = ['super_users', 'free_users', 'premium_users'];
+        let userFound = false;
+        let userData = null;
+        let userTier = null;
+
+        for (const tier of userTiers) {
+            console.log(`Checking in tier: ${tier}`);
+            // Fetch all children under the current tier
+            const snapshot = await database.ref(tier).once('value');
+            
+            if (snapshot.exists()) {
+                let foundInThisTier = false;
+                snapshot.forEach((childSnapshot) => {
+                    const currentUserData = childSnapshot.val();
+                    // Check if the email matches
+                    if (currentUserData.email === email) {
+                        userData = currentUserData;
+                        userTier = tier;
+                        userFound = true;
+                        foundInThisTier = true; // Flag to break out of forEach
+                        return true; // Stop forEach iteration
+                    }
+                });
+                if (foundInThisTier) {
+                    break; // User found, stop checking other tiers
+                }
+            }
+        }
+
+        if (userFound) {
+            // IMPORTANT: Direct password comparison is INSECURE for production!
+            // Use Firebase Authentication for secure user management.
+            if (userData.password === password) { 
+                console.log('Password matched. Processing login based on tier.');
+                // Store login state and user tier in Local Storage
+                localStorage.setItem('loggedInUser', JSON.stringify({
+                    isLoggedIn: true,
+                    email: email,
+                    tier: userTier, // Save the tier for future checks
+                    // Do NOT store sensitive info like password here
+                }));
+
+                if (userTier === 'super_users') {
+                    showMessageBox('Login successful! Welcome Super User!', false);
+                    setTimeout(() => {
+                        window.location.href = 'onboarding289-Jjxkmgw-token-id=i8228jwbe/keyword-research.html';
+                    }, 1000);
+                } else if (userTier === 'free_users') {
+                    showMessageBox('Login successful! Welcome Free User!', false);
+                    setTimeout(() => {
+                        window.location.href = 'keyword-research-on-boarding.html';
+                    }, 1000);
+                } else if (userTier === 'premium_users') {
+                    // This logic assumes you have a 'paymentComplete' or similar flag for premium users
+                    // If not, you'll need to define how you track payment completion.
+                    // For now, based on previous prompt, it's always "payment incomplete" for Premium.
+                    showMessageBox(`Your Payment Isn't Complete Yet. Complete Your Payment By Clicking Here: <a href="payment.html">Pay Now</a><br><br>If You Did The Payment So Please Wait Some Hours Or Contact Us Here For Fast Approval: <a href="https://wa.me/923443062524" target="_blank">+92 344 306 2524</a>`, true);
+                }
+            } else {
+                console.warn('Login failed: Incorrect password.');
+                showMessageBox(`Wrong Email/Password. Please Contact Support If You Forgot Your Password 🔑 Support:- <a href="https://wa.me/923443062524" target="_blank">+92 344 306 2524 (WhatsApp)</a>`, true);
+            }
+        } else {
+            console.warn('Login failed: User not found in any tier.');
+            showMessageBox(`Wrong Email/Password. Please Contact Support If You Forgot Your Password 🔑 Support:- <a href="https://wa.me/923443062524" target="_blank">+92 344 306 2524 (WhatsApp)</a>`, true);
+        }
+      } catch (error) {
+        console.error("Firebase login error:", error);
+        showMessageBox(`An error occurred during login. Please try again. If the problem persists, contact support.`, true);
+      } finally {
+        loginSubmitBtn.disabled = false;
+        loginSubmitBtn.textContent = 'Login';
+      }
+    });
+
+    // --- Google Login Button Logic ---
+    document.getElementById('googleLoginBtn').addEventListener('click', () => {
+      showMessageBox('Google Authentication Isn\'t Working Now. Please Use Email/Password Instead.', false);
+    });
+</script>
+</body>
+</html>
