@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Choose Your Plan - Hamexy SEO</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --primary-red: #FF0000;
+      --dark-red: #CC0000;
+      --background-dark: #121212;
+      --card-background: #1e1e1e;
+      --border-color: #333;
+      --text-light: #e0e0e0;
+      --text-medium: #999;
+      --accent-blue: #00aaff;
+      --shadow-color: rgba(0, 0, 0, 0.7);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background-color: var(--background-dark);
+      color: var(--text-light);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+    }
+
+    h1 {
+      font-size: 2.5em;
+      color: var(--primary-red);
+      margin-bottom: 10px;
+      text-align: center;
+      text-shadow: 0 0 10px var(--primary-red);
+    }
+
+    p.description {
+      max-width: 600px;
+      text-align: center;
+      color: var(--text-medium);
+      font-size: 1.1em;
+      margin-bottom: 40px;
+      line-height: 1.6;
+    }
+
+    .plans-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 30px;
+      justify-content: center;
+      max-width: 1000px;
+      width: 100%;
+    }
+
+    .plan-card {
+      background-color: var(--card-background);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 30px 25px;
+      width: 300px;
+      box-shadow: 0 6px 20px var(--shadow-color);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .plan-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px var(--shadow-color);
+      border-color: var(--primary-red);
+    }
+
+    .plan-title {
+      font-size: 1.6em;
+      font-weight: 700;
+      color: var(--primary-red);
+      margin-bottom: 10px;
+    }
+
+    .plan-price {
+      font-size: 2em;
+      font-weight: bold;
+      margin-bottom: 20px;
+      color: var(--accent-blue);
+    }
+
+    .plan-features {
+      text-align: left;
+      margin-bottom: 25px;
+      color: var(--text-medium);
+      line-height: 1.6;
+      font-size: 0.95em;
+    }
+
+    .plan-features li {
+      margin-bottom: 10px;
+    }
+
+    .plan-card button {
+      padding: 12px 20px;
+      font-size: 1em;
+      font-weight: bold;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      margin: 5px;
+      transition: background 0.3s ease, transform 0.2s ease;
+      box-shadow: 0 4px 12px var(--shadow-color);
+    }
+
+    .buy-btn {
+      background-color: var(--primary-red);
+      color: white;
+    }
+
+    .buy-btn:hover {
+      background-color: var(--dark-red);
+      transform: translateY(-2px);
+    }
+
+    .signup-btn {
+      background-color: var(--accent-blue);
+      color: white;
+    }
+
+    .signup-btn:hover {
+      background-color: #0088cc;
+      transform: translateY(-2px);
+    }
+
+    @media (max-width: 700px) {
+      .plans-container {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Choose Your SEO Plan</h1>
+  <p class="description">
+    Supercharge your YouTube growth with AI-powered keyword tools. Select a plan that fits your goals.
+    Free users can explore basic features, while Premium users unlock everything — unlimited searches, AI tools & more!
+  </p>
+
+  <div class="plans-container">
+    <!-- Free Plan -->
+    <div class="plan-card">
+      <div class="plan-title">Free Plan</div>
+      <div class="plan-price">$0 / Lifetime</div>
+      <ul class="plan-features">
+        <li>✅ 3 Searches Every 24 Hours</li>
+        <li>❌ No AI Tools Access</li>
+        <li>❌ No Rank Checker</li>
+        <li>✅ Basic Keyword Suggestions</li>
+        <li>❌ Support Priority</li>
+      </ul>
+      <button class="signup-btn" onclick="window.location.href='signup.html'">Sign Up Free</button>
+    </div>
+
+    <!-- Premium Plan -->
+    <div class="plan-card">
+      <div class="plan-title">Premium Plan</div>
+      <div class="plan-price">$1.99 / Lifetime</div>
+      <ul class="plan-features">
+        <li>✅ Unlimited Keyword Searches</li>
+        <li>✅ Access All AI Features</li>
+        <li>✅ Video Rank Checker</li>
+        <li>✅ Priority Email Support</li>
+        <li>✅ Faster Results + Bonus Tools</li>
+      </ul>
+           <button class="signup-btn" onclick="window.location.href='signup.html'">Sign Up</button>
+    </div>
+  </div>
+</body>
+</html>
